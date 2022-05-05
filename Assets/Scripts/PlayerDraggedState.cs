@@ -17,8 +17,13 @@ public class PlayerDraggedState : PlayerBaseState {
         Vector3 launchPointPosition = launchPoint.transform.position;
         float distance = Vector3.Distance(mousePosition, launchPointPosition);
 
-        if (distance < launchPoint.GetComponent<CircleCollider2D>().radius) {
+        float pullMaxLength = launchPoint.GetComponent<CircleCollider2D>().radius;
+
+        if (distance < pullMaxLength) {
             player.transform.position = new Vector3(mousePosition.x, mousePosition.y, 1);
+        } else {
+            Vector3 maxPosition = Vector3.MoveTowards(launchPointPosition, mousePosition, pullMaxLength);
+            player.transform.position = new Vector3(maxPosition.x, maxPosition.y, 1);
         }
 
     }
