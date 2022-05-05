@@ -12,6 +12,6 @@ public class PlayerIdleState : PlayerBaseState
     }
 
     public override void UpdateState(PlayerStateManager player) {
-        Debug.Log("Update IDLE state");
+        // Debug.Log("Update IDLE state");
     }
 }

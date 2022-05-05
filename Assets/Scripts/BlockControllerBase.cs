@@ -5,7 +5,12 @@ using TMPro;
 
 public class BlockControllerBase : MonoBehaviour {
     [SerializeField]
-    private Vector2 force = Vector2.zero;
+    private float force = 0f;
+
+    private float contactForce = 0f;
+
+    [SerializeField]
+    private float destroyThreshold;
 
     private Rigidbody2D rigidbody2D;
     private float mass;
@@ -22,18 +27,34 @@ public class BlockControllerBase : MonoBehaviour {
     // Update is called once per frame
     protected virtual void Update() {
         UpdateForce();
-        if (force != Vector2.zero) {
-            float normalizedForce = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(force.x), 2) + Mathf.Pow(Mathf.Abs(force.y), 2));
-            text.text = normalizedForce.ToString("F2");
-        }
-    }
+        if (contactForce != 0f) {
+            text.text = contactForce.ToString("F2");
 
-    public Vector2 GetAppliedForce() {
-        return force;
+            if (contactForce > destroyThreshold) {
+                Destroy(this.gameObject);
+            }
+        }
     }
 
     void UpdateForce() {
         Vector2 velocity = rigidbody2D.velocity;
-        force = velocity * mass;
+        Vector2 forceVector = velocity * mass;
+        force = Mathf.Sqrt(forceVector.sqrMagnitude);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        GameObject contactObject = collision.gameObject.tag == "Environment" ? this.gameObject : collision.gameObject;
+
+        Rigidbody2D contactObjectRb2D = contactObject.GetComponent<Rigidbody2D>();
+        float contactSpeed = Mathf.Sqrt(rigidbody2D.velocity.sqrMagnitude);
+        Debug.Log($"contact speed,{transform.name},{contactSpeed}");
+
+        if (contactSpeed < 2f) {
+            return;
+        }
+
+        Vector2 contactObjectForceVector = contactObjectRb2D.velocity * contactObjectRb2D.mass;
+        contactForce = Mathf.Sqrt(contactObjectForceVector.sqrMagnitude);
+        Debug.Log($"collision,{transform.name},{collision.gameObject.name},{contactObject.name},{contactForce}");
     }
 }

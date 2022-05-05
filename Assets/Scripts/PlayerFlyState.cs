@@ -11,6 +11,6 @@ public class PlayerFlyState : PlayerBaseState
     }
 
     public override void UpdateState(PlayerStateManager player) {
-        Debug.Log("Update FLY state");
+        // Debug.Log("Update FLY state");
     }
 }
