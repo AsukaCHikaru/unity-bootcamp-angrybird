@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerStateManager : MonoBehaviour
 {
+    [SerializeField]
     PlayerBaseState currentState;
     PlayerIdleState playerIdleState = new PlayerIdleState();
     PlayerDraggedState playerDraggedState = new PlayerDraggedState();
@@ -24,8 +25,10 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        currentState = playerDraggedState;
-        currentState.EnterState(this);
+        if (currentState == playerIdleState) {
+            currentState = playerDraggedState;
+            currentState.EnterState(this);
+        }
     }
 
     private void OnMouseUp() {
@@ -33,5 +36,10 @@ public class PlayerStateManager : MonoBehaviour
             currentState = playerFlyState;
             currentState.EnterState(this);
         }
+    }
+
+    public void ResetState () {
+        currentState = playerIdleState;
+        currentState.EnterState(this);
     }
 }
