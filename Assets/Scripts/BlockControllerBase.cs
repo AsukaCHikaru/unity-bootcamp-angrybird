@@ -47,7 +47,7 @@ public class BlockControllerBase : MonoBehaviour {
 
         Rigidbody2D contactObjectRb2D = contactObject.GetComponent<Rigidbody2D>();
         float contactSpeed = Mathf.Sqrt(rigidbody2D.velocity.sqrMagnitude);
-        Debug.Log($"contact speed,{transform.name},{contactSpeed}");
+//        Debug.Log($"contact speed,{transform.name},{contactSpeed}");
 
         if (contactSpeed < 2f) {
             return;
@@ -55,6 +55,6 @@ public class BlockControllerBase : MonoBehaviour {
 
         Vector2 contactObjectForceVector = contactObjectRb2D.velocity * contactObjectRb2D.mass;
         contactForce = Mathf.Sqrt(contactObjectForceVector.sqrMagnitude);
-        Debug.Log($"collision,{transform.name},{collision.gameObject.name},{contactObject.name},{contactForce}");
+        // Debug.Log($"collision,{transform.name},{collision.gameObject.name},{contactObject.name},{contactForce}");
     }
 }

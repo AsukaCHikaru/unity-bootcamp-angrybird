@@ -24,6 +24,10 @@ public class PlayerStateManager : MonoBehaviour
         currentState.UpdateState(this);
     }
 
+    public bool isFlyState () {
+        return currentState == playerFlyState;
+    }
+
     private void OnMouseDown() {
         if (currentState == playerIdleState) {
             currentState = playerDraggedState;
